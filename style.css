@@ -1,0 +1,177 @@
+.root {
+    padding-top: 40px;
+}
+
+.city {
+    margin-bottom: 30px;
+    border-radius: 6px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgb(0 0 0 / 10%);
+    height: 430px;
+}
+
+.city_add_wrapper .city{
+    background: #62829e;
+    transition: all .3s ease-in-out;
+    position: relative;
+}
+
+.city_add_wrapper .city:hover{
+    background: #fff;
+    transition: all .3s ease-in-out;
+}
+
+.city_add {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+}
+
+.city_add_wrapper .city_add img {
+    filter: invert(1);
+    height: 50px;
+}
+
+.city_add_wrapper .city:hover .city_add img{
+    filter: invert(0);
+}
+
+.city__image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.city__info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.city__info-item {
+    display: flex;
+    margin-right: 10px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.city__info-item img {
+    margin-right: 5px;
+}
+
+.city__info-item img {
+    width: 20px;
+    height: auto;
+}
+
+.city__btn-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.root .btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    background: #62829e;
+    border-color: #62829e;
+}
+
+.root .btn-primary:hover {
+    background: #fff;
+    color: #62829e;
+    border-color: #62829e;
+}
+
+.root .btn-primary:focus {
+    background: #fff;
+    color: #62829e;
+    border-color: #62829e;
+    box-shadow: 0 0 0 0.25rem rgb(98 130 158 / 50%);
+}
+
+.root .btn-primary:active {
+    background: #fff;
+    color: #62829e;
+    border-color: #62829e;
+    box-shadow: 0 0 0 0.25rem rgb(98 130 158 / 50%);
+}
+
+
+.root .btn-primary img {
+    filter: invert(1);
+    width: auto;
+    height: 30px;
+    max-height: 30px;
+}
+.root .btn-primary:hover img{
+    filter: invert(0);
+}
+
+.root .btn-primary:focus img{
+    filter: invert(0);
+}
+
+.root .btn-primary:active img{
+    filter: invert(0);
+}
+
+.calculate-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.root .calculate {
+    width: 200px;
+    font-size: 22px;
+}
+
+/*checkbox*/
+
+input[type=checkbox] {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+label {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 70px;
+    height: 35px;
+    background: grey;
+    display: block;
+    border-radius: 100px;
+    position: relative;
+}
+
+label:after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 25px;
+    height: 25px;
+    background: #fff;
+    border-radius: 90px;
+    transition: 0.3s;
+}
+
+input:checked + label {
+    background: #62829e;
+}
+
+input:checked + label:after {
+    left: calc(100% - 5px);
+    transform: translateX(-100%);
+}
+
+label:active:after {
+    width: 20px;
+}
