@@ -10,10 +10,7 @@ function User(smile, cog, level, coins) {
     this.level = level;
     this.coins = coins;
 }
-
 const cites = [];
-
-
 let cityId = 0;
 
 //Automation -----------------------------------------------------------------------------------------------------------
@@ -39,35 +36,13 @@ function createElement(tag, className, attributeName, attributeValue) {
     return $tag;
 }
 
-
-function cityCommunicate(param, num, i) {
-    cites[i].param = true;
-
-    const $cityInfo = document.querySelectorAll('.city__info');
-    const $cityInfoItem = createElement('div', `city__info-item city__info-item-${param}`);
-
-    $cityInfo[i].appendChild($cityInfoItem);
-    const $cityInfoItemImage = createElement('img');
-    $cityInfoItemImage.setAttribute('src', `${infoImages[num]}`);
-
-    $cityInfoItem.appendChild($cityInfoItemImage);
-}
-
 //function cityGenerate ------------------------------------------------------------------------------------------------
-
-let $cityCoins = document.querySelectorAll('.city__info-item-coins');
-let $addSmileButton = document.querySelectorAll('.addSmile');
-let $addCogButton = document.querySelectorAll('.addCog');
-let $upLevelButton = document.querySelectorAll('.upLevel');
-let $citySmile = document.querySelectorAll('.city__info-item-smile');
-let $cityCog = document.querySelectorAll('.city__info-item-cog');
-let $cityLevel = document.querySelectorAll('.city__info-item-level');
 
 function cityGenerate() {
 
     let newCity = new User(false, false, 1, 2)
 
-    const $cityWrapper = createElement('div', 'col-md-4 col-sm-6 col-12');
+    const $cityWrapper = createElement('div', 'col-md-4 col-sm-6 col-12 cityWrapper');
 
     $root.insertBefore($cityWrapper, $rootChild);
 
@@ -75,13 +50,32 @@ function cityGenerate() {
 
     $cityWrapper.appendChild($city);
 
+    const $cityTop = createElement('div', 'city__top');
+
     const $citySwitcher = createElement('div', 'city__switcher');
     const $citySwitcherCheckbox = createElement('input', 'citySwitch', 'id', `switch${cityId}`);
     $citySwitcherCheckbox.setAttribute('type', 'checkbox');
     $citySwitcherCheckbox.setAttribute('checked', 'checked');
     const $citySwitcherLabel = createElement('label', '', 'for', `switch${cityId}`);
+    $cityTop.appendChild($citySwitcher);
 
-    $city.appendChild($citySwitcher);
+    const $cityName = createElement('div', 'city__name');
+    const $inputGroup = createElement('div', 'input-group');
+    const $inputGroupInput = createElement('input', 'input', 'type', 'text');
+    $inputGroupInput.setAttribute('name', `name`);
+    $inputGroupInput.setAttribute('id', `name`);
+    const $inputGroupLabel = createElement('label', 'label', 'for', `name`);
+    $inputGroupLabel.innerText = 'City name';
+
+    $city.appendChild($cityTop);
+
+    $cityTop.appendChild($citySwitcher);
+    $cityTop.appendChild($cityName);
+
+    $cityName.appendChild($inputGroup);
+    $inputGroup.appendChild($inputGroupInput);
+    $inputGroup.appendChild($inputGroupLabel);
+
     $citySwitcher.appendChild($citySwitcherCheckbox);
     $citySwitcher.appendChild($citySwitcherLabel);
 
@@ -98,42 +92,42 @@ function cityGenerate() {
 
     $city.appendChild($cityInfo);
 
-    let i = 0;
+    for (let i = 0; i < infoImages.length; i++) {
+        const $cityInfoItem = createElement('div', 'city__info-item');
 
-    for (let item in newCity) {
+        $cityInfo.appendChild($cityInfoItem);
 
-        if (newCity[item] >= 1) {
-            const $cityInfoItem = createElement('div', 'city__info-item');
+        const $cityInfoItemImage = createElement('img');
+        $cityInfoItemImage.setAttribute('src', `${infoImages[i]}`);
 
-            $cityInfo.appendChild($cityInfoItem);
+        $cityInfoItem.appendChild($cityInfoItemImage);
 
-            const $cityInfoItemImage = createElement('img');
-            $cityInfoItemImage.setAttribute('src', `${infoImages[i]}`);
+        const $cityInfoItemText = createElement('div');
+        $cityInfoItem.appendChild($cityInfoItemText);
 
-            $cityInfoItem.appendChild($cityInfoItemImage);
+        if(i === 0) {
+            $cityInfoItem.classList.add('citySmile');
+            $cityInfoItem.style.display = 'none';
 
-            const $cityInfoItemText = createElement('div');
-
-            if (i === 0) {
-
-            }
-            if (i === 1) {
-
-            }
-            if (i === 2) {
-                $cityInfoItemText.innerText = newCity.level;
-                $cityInfoItemText.classList.add('city__info-item-level');
-            }
-            if (i === 3) {
-                $cityInfoItemText.innerText = newCity.coins;
-                $cityInfoItemText.classList.add('city__info-item-coins');
-            }
-
-            $cityInfoItem.appendChild($cityInfoItemText);
         }
-        i++;
-    }
+        if(i === 1) {
+            $cityInfoItem.classList.add('cityCog');
+            $cityInfoItem.style.display = 'none';
+        }
 
+        if(i === 2) {
+            $cityInfoItemText.innerText = newCity.level;
+            $cityInfoItemText.classList.add('cityLvText');
+        }
+
+        if(i === 3) {
+            $cityInfoItemText.innerText = newCity.coins;
+            $cityInfoItemText.classList.add('cityCoinsText');
+        }
+
+
+
+    }
 
     const $cityBtnGroup = createElement('div', 'city__btn-group');
 
@@ -163,121 +157,96 @@ function cityGenerate() {
 
     cites.push(newCity);
 
-    $cityCoins = document.querySelectorAll('.city__info-item-coins');
-    $addSmileButton = document.querySelectorAll('.addSmile');
-    $addCogButton = document.querySelectorAll('.addCog');
-    $upLevelButton = document.querySelectorAll('.upLevel');
-    $citySmile = document.querySelectorAll('.city__info-item-smile');
-    $cityCog = document.querySelectorAll('.city__info-item-cog');
-    $cityLevel = document.querySelectorAll('.city__info-item-level');
     cityId = cityId + 1;
 }
 
-const addCity = document.querySelector('.city_add');
+//function cityCommunication -------------------------------------------------------------------------------------------
 
-let smileFormula;
-let cogFormula;
-function coinsFormulaIfs(i) {
-    if (cites[i].smile) {
-        smileFormula = 2;
-    }else {
-        smileFormula = 0;
-    }
-
-    if (cites[i].cog) {
-        cogFormula = 2;
-    }else {
-        cogFormula = 1;
-    }
-
-    cites[i].coins = (cites[i].level * 2 + smileFormula) * cogFormula;
-    $cityCoins[i].innerText = `${cites[i].coins}`;
-
-    console.log(cites[i]);
-}
-
-addCity.addEventListener('click', function () {
+const $addCity = document.querySelector('.city_add');
+$addCity.addEventListener('click', function () {
     cityGenerate();
 
-    for (let i = 0; i < $addSmileButton.length; i++) {
-        $addSmileButton = document.querySelectorAll('.addSmile');
-        $citySmile = document.querySelectorAll('.city__info-item-smile');
-        $addSmileButton[i].addEventListener('click', function () {
-            console.log($citySmile)
+    const $cityCard = document.querySelectorAll('.cityWrapper');
+
+    const $addSmile = document.querySelectorAll('.addSmile');
+    const $addCog = document.querySelectorAll('.addCog');
+    const $upLevel = document.querySelectorAll('.upLevel');
+    const $deleteCity = document.querySelectorAll('.deleteCity');
+
+    const $citySmile = document.querySelectorAll('.citySmile');
+    const $cityCog = document.querySelectorAll('.cityCog');
+    const $cityLevelText = document.querySelectorAll('.cityLvText');
+    const $cityCoinsText = document.querySelectorAll('.cityCoinsText');
+
+    function coinsFormulaIfs(i) {
+        let smileFormula;
+        let cogFormula;
+
+        if (cites[i].smile) {
+            smileFormula = 2;
+        }else {
+            smileFormula = 0;
+        }
+
+        if (cites[i].cog) {
+            cogFormula = 2;
+        }else {
+            cogFormula = 1;
+        }
+
+        cites[i].coins = (cites[i].level * 2 + smileFormula) * cogFormula;
+        $cityCoinsText[i].innerText = `${cites[i].coins}`;
+    }
+
+    for (let i = 0; i < $addSmile.length; i++) {
+        $addSmile[i].addEventListener('click', function () {
             if (cites[i].smile === false) {
                 cites[i].smile = true;
-                cityCommunicate('smile', 0, `${i}`);
-
+                $citySmile[i].style.display = "block";
                 coinsFormulaIfs(i);
             } else {
                 cites[i].smile = false;
-                $citySmile[i].remove();
-
+                $citySmile[i].style.display = "none";
                 coinsFormulaIfs(i);
             }
         })
     }
 
-    for (let i = 0; i < $addCogButton.length; i++) {
+    for (let i = 0; i < $addCog.length; i++) {
 
-        $addCogButton = document.querySelectorAll('.addCog');
-        $cityCog = document.querySelectorAll('.city__info-item-cog');
-
-        $addCogButton[i].addEventListener('click', function () {
+        $addCog[i].addEventListener('click', function () {
             if (cites[i].cog === false) {
-
                 cites[i].cog = true;
-                cityCommunicate('cog', 1, `${i}`);
-
+                $cityCog[i].style.display = "block";
                 coinsFormulaIfs(i);
             } else {
                 cites[i].cog = false;
-                $cityCog[i].remove();
-
+                $cityCog[i].style.display = "none";
                 coinsFormulaIfs(i);
             }
         })
     }
 
-    for (let i = 0; i < $upLevelButton.length; i++) {
-
-
-        $upLevelButton[i].addEventListener('click', function () {
-
-            $upLevelButton = document.querySelectorAll('.upLevel');
-            $cityLevel = document.querySelectorAll('.city__info-item-level');
-
+    for (let i = 0; i < $upLevel.length; i++) {
+        $upLevel[i].addEventListener('click', function () {
             if (cites[i].level < 4) {
                 cites[i].level = cites[i].level + 1;
-                $cityLevel[i].innerText = `${cites[i].level}`;
-
+                $cityLevelText[i].innerText = cites[i].level;
                 coinsFormulaIfs(i);
             } else {
                 cites[i].level = 1;
-                $cityLevel[i].innerText = `${cites[i].level}`;
-
+                $cityLevelText[i].innerText = '1'
                 coinsFormulaIfs(i);
             }
         })
     }
 
+    for (let i = 0; i < $deleteCity.length; i++) {
+        $deleteCity[i].addEventListener('click', function () {
+            $cityCard[i].remove()
+        })
+    }
 });
-
-
-
-// for (let i = 0; i < removeCityButton.length; i++) {
-//     removeCityButton[i].addEventListener('click', function () {
-//         if (cites[i].smile === false) {
-//             cites[i].smile = true;
-//             cityCommunicate('smile', 0, `${i}`)
-//         }else {
-//             const $cityInfoItem = document.querySelectorAll('.city__info-item-smile');
-//             $cityInfoItem[i].remove();
-//             cites[i].smile = false;
-//         }
-//         console.log(cites[i].smile)
-//     })
-// }
 
 //function calculate----------------------------------------------------------------------------------------------------
 
@@ -297,9 +266,7 @@ function calculateGold() {
 
     alert(`Ты заработал ${allResult} золота.`)
 }
-
 const calculate = document.querySelector('.calculate');
-
 calculate.addEventListener('click', function () {
     calculateGold()
 })
