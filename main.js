@@ -10,6 +10,7 @@ function User(smile, cog, level, coins) {
     this.level = level;
     this.coins = coins;
 }
+
 const cites = [];
 let cityId = 0;
 
@@ -105,26 +106,25 @@ function cityGenerate() {
         const $cityInfoItemText = createElement('div');
         $cityInfoItem.appendChild($cityInfoItemText);
 
-        if(i === 0) {
+        if (i === 0) {
             $cityInfoItem.classList.add('citySmile');
             $cityInfoItem.style.display = 'none';
 
         }
-        if(i === 1) {
+        if (i === 1) {
             $cityInfoItem.classList.add('cityCog');
             $cityInfoItem.style.display = 'none';
         }
 
-        if(i === 2) {
+        if (i === 2) {
             $cityInfoItemText.innerText = newCity.level;
             $cityInfoItemText.classList.add('cityLvText');
         }
 
-        if(i === 3) {
+        if (i === 3) {
             $cityInfoItemText.innerText = newCity.coins;
             $cityInfoItemText.classList.add('cityCoinsText');
         }
-
 
 
     }
@@ -184,13 +184,13 @@ $addCity.addEventListener('click', function () {
 
         if (cites[i].smile) {
             smileFormula = 2;
-        }else {
+        } else {
             smileFormula = 0;
         }
 
         if (cites[i].cog) {
             cogFormula = 2;
-        }else {
+        } else {
             cogFormula = 1;
         }
 
@@ -254,18 +254,20 @@ function calculateGold() {
     let allResult = 0;
     for (let i = 0; i < cites.length; i++) {
         const citySwitch = document.querySelectorAll('input[type=checkbox]');
+        if (citySwitch) {
+            if (citySwitch[i].checked) {
+                let resultCity = 0;
 
-        if (citySwitch[i].checked) {
-            let resultCity = 0;
+                resultCity = resultCity + cites[i].coins;
 
-            resultCity = resultCity + cites[i].coins;
-
-            allResult = resultCity + allResult
+                allResult = resultCity + allResult
+            }
         }
     }
 
     alert(`Ты заработал ${allResult} золота.`)
 }
+
 const calculate = document.querySelector('.calculate');
 calculate.addEventListener('click', function () {
     calculateGold()

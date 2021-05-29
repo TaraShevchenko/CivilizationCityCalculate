@@ -61,6 +61,7 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
+    height: 30px;
 }
 
 .city__info-item {
@@ -68,6 +69,7 @@
     margin-right: 10px;
     font-size: 20px;
     font-weight: 600;
+    height: 30px;
 }
 
 .city__info-item img {
