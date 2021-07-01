@@ -4,14 +4,15 @@ const $rootChild = document.querySelector('.root .container .row .city_add_wrapp
 const buttonImages = ['assets/images/smile-solid.svg', 'assets/images/cog-solid.svg', 'assets/images/long-arrow-alt-up-solid.svg', 'assets/images/trash-solid.svg'];
 const infoImages = ['assets/images/smile-solid.svg', 'assets/images/cog-solid.svg', 'assets/images/Lv.svg', 'assets/images/coins-solid.svg'];
 
-function User(smile, cog, level, coins) {
+function User(smile, cog, level, coins, cityId) {
     this.smile = smile;
     this.cog = cog;
     this.level = level;
     this.coins = coins;
+    this.cityId = cityId;
 }
 
-const cites = [];
+let cites = [];
 let cityId = 0;
 
 //Automation -----------------------------------------------------------------------------------------------------------
@@ -37,11 +38,31 @@ function createElement(tag, className, attributeName, attributeValue) {
     return $tag;
 }
 
+function coinsFormulaIfs(i) {
+    let smileFormula;
+    let cogFormula;
+
+    if (cites[i].smile) {
+        smileFormula = 2;
+    } else {
+        smileFormula = 0;
+    }
+
+    if (cites[i].cog) {
+        cogFormula = 2;
+    } else {
+        cogFormula = 1;
+    }
+
+    cites[i].coins = (cites[i].level * 2 + smileFormula) * cogFormula;
+    $cityCoinsText[i].innerText = `${cites[i].coins}`;
+}
+
 //function cityGenerate ------------------------------------------------------------------------------------------------
 
 function cityGenerate() {
 
-    let newCity = new User(false, false, 1, 2)
+    let newCity = new User(false, false, 1, 2, cityId)
 
     const $cityWrapper = createElement('div', 'col-md-4 col-sm-6 col-12 cityWrapper');
 
@@ -106,24 +127,23 @@ function cityGenerate() {
         const $cityInfoItemText = createElement('div');
         $cityInfoItem.appendChild($cityInfoItemText);
 
-        if (i === 0) {
-            $cityInfoItem.classList.add('citySmile');
-            $cityInfoItem.style.display = 'none';
-
-        }
-        if (i === 1) {
-            $cityInfoItem.classList.add('cityCog');
-            $cityInfoItem.style.display = 'none';
-        }
-
-        if (i === 2) {
-            $cityInfoItemText.innerText = newCity.level;
-            $cityInfoItemText.classList.add('cityLvText');
-        }
-
-        if (i === 3) {
-            $cityInfoItemText.innerText = newCity.coins;
-            $cityInfoItemText.classList.add('cityCoinsText');
+        switch (i) {
+            case 0:
+                $cityInfoItem.classList.add('citySmile');
+                $cityInfoItem.style.display = 'none';
+                break;
+            case 1:
+                $cityInfoItem.classList.add('cityCog');
+                $cityInfoItem.style.display = 'none';
+                break;
+            case 2:
+                $cityInfoItemText.innerText = newCity.level;
+                $cityInfoItemText.classList.add('cityLvText');
+                break;
+            case 3:
+                $cityInfoItemText.innerText = newCity.coins;
+                $cityInfoItemText.classList.add('cityCoinsText');
+                break;
         }
 
 
@@ -138,17 +158,19 @@ function cityGenerate() {
         const $cityBtnImage = createElement('img');
         $cityBtnImage.setAttribute('src', `${buttonImages[i]}`);
 
-        if (i === 0) {
-            $cityBtn.classList.add('addSmile');
-        }
-        if (i === 1) {
-            $cityBtn.classList.add('addCog');
-        }
-        if (i === 2) {
-            $cityBtn.classList.add('upLevel');
-        }
-        if (i === 3) {
-            $cityBtn.classList.add('deleteCity');
+        switch (i) {
+            case 0:
+                $cityBtn.classList.add('addSmile');
+                break;
+            case 1:
+                $cityBtn.classList.add('addCog');
+                break;
+            case 2:
+                $cityBtn.classList.add('upLevel');
+                break;
+            case 3:
+                $cityBtn.classList.add('deleteCity');
+                break;
         }
 
         $cityBtnGroup.appendChild($cityBtn);
@@ -158,9 +180,14 @@ function cityGenerate() {
     cites.push(newCity);
 
     cityId = cityId + 1;
+
+
+    console.log('create', cites)
 }
 
 //function cityCommunication -------------------------------------------------------------------------------------------
+
+let test = [];
 
 const $addCity = document.querySelector('.city_add');
 $addCity.addEventListener('click', function () {
@@ -178,73 +205,70 @@ $addCity.addEventListener('click', function () {
     const $cityLevelText = document.querySelectorAll('.cityLvText');
     const $cityCoinsText = document.querySelectorAll('.cityCoinsText');
 
-    function coinsFormulaIfs(i) {
-        let smileFormula;
-        let cogFormula;
 
-        if (cites[i].smile) {
-            smileFormula = 2;
-        } else {
-            smileFormula = 0;
-        }
-
-        if (cites[i].cog) {
-            cogFormula = 2;
-        } else {
-            cogFormula = 1;
-        }
-
-        cites[i].coins = (cites[i].level * 2 + smileFormula) * cogFormula;
-        $cityCoinsText[i].innerText = `${cites[i].coins}`;
-    }
 
     for (let i = 0; i < $addSmile.length; i++) {
-        $addSmile[i].addEventListener('click', function () {
-            if (cites[i].smile === false) {
-                cites[i].smile = true;
-                $citySmile[i].style.display = "block";
-                coinsFormulaIfs(i);
-            } else {
-                cites[i].smile = false;
-                $citySmile[i].style.display = "none";
-                coinsFormulaIfs(i);
-            }
-        })
+        if (i >= test.length) {
+            $addSmile[i].addEventListener('click', function () {
+                if (cites[i].smile === false) {
+                    cites[i].smile = true;
+                    $citySmile[i].style.display = "block";
+                    coinsFormulaIfs(i);
+                } else {
+                    cites[i].smile = false;
+                    $citySmile[i].style.display = "none";
+                    coinsFormulaIfs(i);
+                }
+            })
+        }
     }
 
     for (let i = 0; i < $addCog.length; i++) {
-
-        $addCog[i].addEventListener('click', function () {
-            if (cites[i].cog === false) {
-                cites[i].cog = true;
-                $cityCog[i].style.display = "block";
-                coinsFormulaIfs(i);
-            } else {
-                cites[i].cog = false;
-                $cityCog[i].style.display = "none";
-                coinsFormulaIfs(i);
-            }
-        })
+        if (i >= test.length) {
+            $addCog[i].addEventListener('click', function () {
+                if (cites[i].cog === false) {
+                    cites[i].cog = true;
+                    $cityCog[i].style.display = "block";
+                    coinsFormulaIfs(i);
+                } else {
+                    cites[i].cog = false;
+                    $cityCog[i].style.display = "none";
+                    coinsFormulaIfs(i);
+                }
+            })
+        }
     }
 
     for (let i = 0; i < $upLevel.length; i++) {
-        $upLevel[i].addEventListener('click', function () {
-            if (cites[i].level < 4) {
-                cites[i].level = cites[i].level + 1;
-                $cityLevelText[i].innerText = cites[i].level;
-                coinsFormulaIfs(i);
-            } else {
-                cites[i].level = 1;
-                $cityLevelText[i].innerText = '1'
-                coinsFormulaIfs(i);
-            }
-        })
+        if (i >= test.length) {
+            $upLevel[i].addEventListener('click', function () {
+                if (cites[i].level < 4) {
+                    cites[i].level = cites[i].level + 1;
+                    $cityLevelText[i].innerText = cites[i].level;
+                    coinsFormulaIfs(i);
+                } else {
+                    cites[i].level = 1;
+                    $cityLevelText[i].innerText = '1'
+                    coinsFormulaIfs(i);
+                }
+            })
+        }
     }
 
+
     for (let i = 0; i < $deleteCity.length; i++) {
-        $deleteCity[i].addEventListener('click', function () {
-            $cityCard[i].remove()
-        })
+        if (i >= test.length) {
+            test.push(i);
+            console.log(test);
+
+            $deleteCity[i].addEventListener('click', function () { 
+                $cityCard[i].remove();
+                const newCities = cites.slice(i + 1);
+                console.log(newCities);
+                cites = newCities;
+                console.log(cites);
+            })
+        }
     }
 });
 
@@ -259,8 +283,7 @@ function calculateGold() {
                 let resultCity = 0;
 
                 resultCity = resultCity + cites[i].coins;
-
-                allResult = resultCity + allResult
+                allResult = resultCity + allResult;
             }
         }
     }
